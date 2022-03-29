@@ -1,0 +1,63 @@
+.showsDisplay{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.showsTitles{
+    font-weight: bold;
+}
+
+.deleteButton{
+    height: 25px;   
+    background-color:#f44336;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    position: relative;
+    top: 13px;
+    margin-left: 50px;
+}
+
+.deleteButton:hover{
+    background-color: red;
+    cursor: pointer;
+}
+
+.deleteButton:active{
+    background-color:#f44336;
+}
+
+.displayButton{
+    height: 25px;   
+    background-color:#f44336;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    position: relative;
+    top: 13px;
+    margin-left: 50px;
+}
+
+.displayButton:hover{
+    background-color: red;
+    cursor: pointer;
+}
+
+.displayButton:active{
+    background-color:#f44336;
+}
+
+#watchlistButton{
+    background-color: rgb(61, 61, 255);
+}
+
+#watchlistButton:hover{
+    background-color: blue;
+}
+
+#watchlistButton:active{
+    background-color: rgb(61, 61, 255);
+}

@@ -1,0 +1,39 @@
+{
+  "shows": [
+    {
+      "title": "seinfeld",
+      "type": "series",
+      "watchlist": false,
+      "release": "9999",
+      "status": "running",
+      "runtime": {
+        "hours": 0,
+        "total": 9
+      },
+      "id": 1
+    },
+    {
+      "title": "matrix",
+      "type": "series",
+      "watchlist": false,
+      "release": "8888",
+      "status": "running",
+      "runtime": {
+        "hours": 0,
+        "total": 8
+      },
+      "id": 2
+    },
+    {
+      "title": "123123",
+      "type": "movie",
+      "watchlist": true,
+      "release": "5555",
+      "runtime": {
+        "hours": 0,
+        "total": 5
+      },
+      "id": 3
+    }
+  ]
+}

@@ -29,7 +29,7 @@ function AddShow (props) {
           status: status,
           runtime: {
             hours: runtime.hours ? runtime.hours : 0,
-            minutes: runtime.minutes ? runtime.minuts : 0,
+            minutes: runtime.minutes ? runtime.minutes : 0,
             total: (runtime.hours*60 + runtime.minutes),
           },
       };
@@ -73,7 +73,7 @@ function AddShow (props) {
         return console.log("limite excedido! " + e.target.value);
       }
 
-      setRelease(e.target.value);
+      setRelease(parseInt(e.target.value));
     };
 
 

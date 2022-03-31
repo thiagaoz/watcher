@@ -1,6 +1,6 @@
 import styles from "./ShowsDisplay.module.css";
 
-function ShowsDisplay ({shows, deleteShow, dismountShowMountEdit}) {
+function ShowsDisplay (props) {
 
   const deleteButtonClicked = (show) => {
       const requestOptions = {
@@ -9,33 +9,32 @@ function ShowsDisplay ({shows, deleteShow, dismountShowMountEdit}) {
       fetch(`http://localhost:3000/shows/${show.id}`, requestOptions)
         .then((response) => {
           if (response.ok) {
-            if(shows.length === 1) {
-              deleteShow([]);
+            if(props.shows.length === 1) {
+              props.deleteShow([]);
             }
             else{
-              const idx = shows.indexOf(show);
-              deleteShow(shows.slice(idx, 1));
+              const idx = props.shows.indexOf(show);
+              props.deleteShow(props.shows.slice(idx, 1));
             }
           }
         }
         );
   };
 
-  const editButtonClicked = (id) => {
-    dismountShowMountEdit(id);
-    console.log("filho online");
+  const editButtonClicked = (show) => {
+    props.passShowToEdit(show);
   };
  
-  if (shows.length === 0) {return <p> Nenhum show encontrado</p> }
+  if (props.shows.length === 0) {return <p> Nenhum show encontrado</p> }
   return (
       <div>
-        {shows.map((show) => {
+        {props.shows.map((show) => {
             return (
                 <div key={show.id} className={styles.showsDisplay}>
                     <p className={styles.showsTitles}> {show.title}</p>
-                    <button className={styles.displayButton} id={styles.watchlistButton} onClick={() => {console.log(shows)}} 
+                    <button className={styles.displayButton} id={styles.watchlistButton} onClick={() => {console.log(props.shows)}} 
                       type="button">{show.watchlist ? "On Watchlist" : "Old"} </button>
-                    <button className={styles.displayButton} id={styles.watchlistButton}  onClick={() => dismountShowMountEdit(show.id)}
+                    <button className={styles.displayButton} id={styles.watchlistButton}  onClick={() => editButtonClicked(show)}
                       type="button">Edit </button>
                     <button className={styles.deleteButton} type="button" onClick={ () => deleteButtonClicked(show) }>Delete</button>
                 </div>

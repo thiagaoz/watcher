@@ -8,12 +8,14 @@ import Watchlist from './Watchlist';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from './Navbar';
 import PickShow from './PickShow';
+import EditShow from './EditShow';
 
 function App() {
   const [shows, setShows] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [renderDisplay, setRenderDisplay] = useState(true);
-  const [showId, setShowId] = useState("");
+  const [showToEdit, setShowToEdit] = useState();
+  const [renderEdit, setRenderEdit] = useState(false);
   const showIdRef = useRef();
 
   //console.log("App iniciados");
@@ -46,16 +48,32 @@ function App() {
     }
   }
 
-  const dismountShowMountEdit = (id) => {
-    setRenderDisplay(false);
-    console.log("papai onlin, id = "+ id);
+  const passShowToEdit = (show) => {
+    setShowToEdit(show);
+    mountManager("edit");
   };
  
-  const mountDisplay= () => { setRenderDisplay(true) };
+  const saveChanges = (show) => { 
+    const updatedShows = shows.slice(show.id, 1);
+    updatedShows.push(show)
+    setShows([...shows, updatedShows])
+  };
+  
+  const mountManager = (str) => {
+    if (str === "display") {
+      setRenderDisplay(true);
+      setRenderEdit(false);
+    }
+    if (str === "edit"){
+      setRenderDisplay(false);
+      setRenderEdit(true);
+    }
+  };
+
   return (
     <Router>
         <div className="App">
-        <Navbar shows={shows} setFilteredOnApp={setFilteredOnApp} mountDisplay={mountDisplay} renderDisplay={renderDisplay}/>  
+        <Navbar shows={shows} setFilteredOnApp={setFilteredOnApp} mountManager={mountManager} />  
           <Switch>
           <Route exact path="/search"> 
             <SearchBar shows={shows} setFilteredOnApp={setFilteredOnApp}/>
@@ -63,10 +81,11 @@ function App() {
           </Route> 
           <Route exact path="/">
             { renderDisplay ?
-              <ShowsDisplay shows={filtered} deleteShow={deleteShow} dismountShowMountEdit={dismountShowMountEdit}/>
+                <ShowsDisplay shows={filtered} deleteShow={deleteShow} passShowToEdit={passShowToEdit}/>
               :
-              null
+                null
             }
+            { renderEdit ? <EditShow show={showToEdit} saveChanges={saveChanges} mountManager={mountManager} /> : null }
           </Route>
           <Route exact path="/add"> <AddShow shows={shows} addShow={addShow}/></Route>
           <Route exact path="/pick">
@@ -82,7 +101,5 @@ export default App;
 
 
 {/*
-Specify indication
-Remove / add watchlist
-Edit SHOW page
+
 */}

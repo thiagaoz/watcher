@@ -1,39 +1,54 @@
 {
   "shows": [
     {
-      "title": "seinfeld",
-      "type": "series",
+      "title": "the matrix",
+      "type": "movie",
       "watchlist": false,
-      "release": "9999",
-      "status": "running",
+      "release": 1999,
       "runtime": {
-        "hours": 0,
-        "total": 9
+        "hours": 2,
+        "minutes": 35,
+        "total": 155
       },
       "id": 1
     },
     {
-      "title": "matrix",
-      "type": "series",
-      "watchlist": false,
-      "release": "8888",
-      "status": "running",
+      "title": "doctor strange 2",
+      "type": "movie",
+      "watchlist": true,
+      "release": 2022,
       "runtime": {
-        "hours": 0,
-        "total": 8
+        "hours": 2,
+        "minutes": 30,
+        "total": 150
       },
       "id": 2
     },
     {
-      "title": "123123",
-      "type": "movie",
+      "title": "moon knight",
+      "type": "series",
       "watchlist": true,
-      "release": "5555",
+      "release": 2022,
+      "status": "running",
       "runtime": {
         "hours": 0,
-        "total": 5
+        "minutes": 55,
+        "total": 55
       },
       "id": 3
+    },
+    {
+      "title": "seinfeld",
+      "type": "series",
+      "watchlist": false,
+      "release": 1989,
+      "status": "canceled",
+      "runtime": {
+        "hours": 0,
+        "minutes": 22,
+        "total": 22
+      },
+      "id": 4
     }
   ]
 }

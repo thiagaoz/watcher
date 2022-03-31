@@ -3,11 +3,7 @@ import { Link } from "react-router-dom";
 function Navbar (props) {
 
     const printWatchlist = () => {
-        if (!props.renderDisplay) {
-            props.mountDisplay();
-            console.log("Mount Display");
-        }
-
+        props.mountManager("display");
         const filtered = [];
         for (const show of props.shows) {
             if (show.watchlist){
@@ -15,6 +11,11 @@ function Navbar (props) {
             }
         }
         return props.setFilteredOnApp(filtered);
+    };
+
+    const printAllShows = () => {
+        props.mountManager("display");
+        props.setFilteredOnApp(false)
     };
 
     return (
@@ -26,7 +27,7 @@ function Navbar (props) {
                     <button type="button" onClick={printWatchlist}>Watchlist</button>
                 </Link>
                 <Link to="/">
-                    <button type="button" onClick={() => {props.setFilteredOnApp(false)}}>Shows</button>
+                    <button type="button" onClick={printAllShows}>Shows</button>
                 </Link>
                 <Link to="/add" >
                     <button type="button">Add</button>

@@ -1,14 +1,7 @@
 import {useState, useRef} from "react";
 
 function AddShow (props) {
-    const [title, setTitle] = useState("");
-    const [watchlist, setWatchlist] = useState(false);
-    const [radioType, setRadioType] = useState({movie: false, series:false})
-    const [release, setRelease] = useState("");
-    const [runtime, setRuntime] = useState({hours: "", minutes: ""}); 
-    const [status, setStatus] = useState();
-    
-    
+  /*
     const addShowButtonPressed = (e) => {
       if (title === ""){
         return alert("Need a title!");
@@ -20,34 +13,6 @@ function AddShow (props) {
         return alert("Need a type!");
       }
 
-
-      const show = {
-          title: title.toLowerCase(),
-          type: (radioType.movie ? "movie" : "series"),
-          watchlist: watchlist,
-          release: release,
-          status: status,
-          runtime: {
-            hours: runtime.hours ? runtime.hours : 0,
-            minutes: runtime.minutes ? runtime.minutes : 0,
-            total: (runtime.hours*60 + runtime.minutes),
-          },
-      };
-
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(show),
-      }
-      fetch("http://localhost:3000/shows", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        props.addShow(data);
-        console.log(data);
-      })
-
       console.log(`${title} (${release}) adicionado com sucesso`);
       setTitle("");
       setRelease("");
@@ -57,72 +22,115 @@ function AddShow (props) {
       setStatus();
 
     };
+*/
+const [submitButton, setSubmitButton] = useState();
+const [radioType, setRadioType] = useState("movie");
+const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
+const urlRef = useRef("https://www.themoviedb.org/movie/603-the-matrix");
 
-    const handleRadioType = (e) => {
-      setRadioType(() => {
-        return {
-          movie: false,
-          series: false,
-          [e.target.value]: true
-          };
+//https://www.themoviedb.org/movie/603-the-matrix
+//https://www.themoviedb.org/tv/92749-moon-knight
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  if (submitButton === "submitToAPI") {
+    const urlArr = urlRef.current.value.split("/");
+    const typeTemp = (urlArr[3]);
+    const id = (urlArr[4].split("-")[0]);
+    fetch(`https://api.themoviedb.org/3/${typeTemp}/${id}?api_key=${API_KEY}&language=en-US`)
+      .then((response) => {
+        if (response.ok) return response.json();
+        throw new Error('Something went wrong');
+      })
+      .then((data) => {
+        if (typeTemp === "movie") {
+          e.target.title.value = data.original_title;
+          e.target.type.value = typeTemp;
+          e.target.release.value = data.release_date.split("-")[0];
+          e.target.runtime.value = data.runtime;
+        }
+        else if (typeTemp === "tv"){
+          e.target.title.value = data.name;
+          e.target.type.value = typeTemp;
+          e.target.release.value = data.first_air_date.split("-")[0];
+          e.target.runtime.value = data.episode_run_time;
+          e.target.status.value = data.status.value==="Ended" ? "canceled" : "running";
+        }
       });
+      return setRadioType(typeTemp);
+  }
+
+  else if (submitButton === "submitToServer") {
+    const show = {
+      title: e.target.title.value,
+      type: e.target.type.value,
+      release: e.target.release.value,
+      runtime: e.target.runtime.value,
+      status: e.target.status.value,
+      watchlist: e.target.watchlist.checked
     };
- 
-    const setReleaseYear = (e) => {
-      if (e.target.value.length > 4){
-        return console.log("limite excedido! " + e.target.value);
-      }
 
-      setRelease(parseInt(e.target.value));
+    const requestOptions = {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(show)
     };
 
+    fetch("http://localhost:3000/shows", requestOptions)
+      .then((response) => {
+        if (response.ok) return response.json();
+        else alert("Error on AddShow POST");
+      })
+      .then((data) => {
+        props.addShow(data);
+        console.log(`${data.title} (${data.release}) adicionado com sucesso`);
+      })
 
-    return (
-    <div>
-        <h2>Add a show</h2>
-        <form>
-            <label htmlFor="title-field">Title: </label>
-            <input id="title-field" type="text" value={title} onChange={(e) => setTitle(e.target.value)}></input>
-            <br></br><br></br>
+  }
 
-            <label htmlFor="release-field">Release: </label>
-            <input id="release-field" type="number" value={release} placeholder="1888 or +" onChange={ setReleaseYear }/>
-            <br></br><br></br>
+  else console.log("erro no submit");
 
-            Runtime
-            <br></br>
-            <input label="Hours: " type="number" value={runtime.hours} style={{width: 50}} placeholder="Hours"
-              onChange={ (e) => {setRuntime({...runtime, hours: parseInt(e.target.value)})} }></input>
-
-            <input label="Minutes: " type="number" value={runtime.minutes} style={{width: 50, marginLeft: 10}} placeholder="Min"
-              onChange={ (e) => {setRuntime({...runtime, minutes: parseInt(e.target.value)})} }></input>
-            <br></br><br></br>
-
-            <div >
-              <input type="radio" name="type" value="movie" checked={radioType.movie} onChange={handleRadioType}/> Movie
-              <input type="radio" name="type" value="series" checked={radioType.series} onChange={handleRadioType}/> Series
-            </div>
-
-            <br></br>
-            <label htmlFor="status-field">Status</label>
-            <br></br>
-
-            <div >
-              <input type="radio" name="status" value={"running"}  disabled={radioType.movie} checked={status === "running"} 
-                onChange={(e) => {setStatus(e.target.value)}}/> Running
-              <input type="radio" name="status" value={"canceled"}  disabled={radioType.movie} checked={status === "canceled"} 
-                onChange={(e) => {setStatus(e.target.value)}}/> Canceled
-            </div>
-            <br></br><br></br>
-
-            <label htmlFor="watchlist-checkbox">Add to Watchlist?</label>
-            <input id="watchlist-checkbox" type="checkbox"  checked={watchlist} onChange={ (e) => setWatchlist(!watchlist)}></input>
-            <br></br><br></br>
-
-            <button type="button" onClick={addShowButtonPressed}>ADD</button>
-        </form>
-    </div>
-    )
+  
 };
 
+const handleRadioType = (e) => {
+  setRadioType(e.target.value);
+};
+
+return (
+<div>
+  <form onSubmit={handleSubmit}>
+    <h3>Add a show yours</h3>
+    <div name="add_with_moviedb" style={{display: "inline-block", margin: '.5rem'}}>
+        The Movie DB link:{" "}
+        <input type="text" ref={urlRef} style={{ width: 400 }}  defaultValue="https://www.themoviedb.org/movie/603-the-matrix"></input>
+      <input type="submit" id="action1" value="Fetch" onClick={(e) => setSubmitButton("submitToAPI")} />
+    </div>  
+    
+    <div >
+      Title: 
+      <input type="text" name="title"/>
+      <br></br>
+      <input type="radio" name="type" value="movie" checked={radioType==="movie"}  onChange={handleRadioType}/>Movie
+      <input type="radio" name="type" value="tv" checked={radioType==="tv"} onChange={handleRadioType} style={{marginLeft: "5%"}}/>TV
+      <br></br>
+      <label htmlFor="status-running" />Running
+      <input type="radio"  name="status" value="running" disabled={radioType === "movie"} />
+      <label htmlFor="status-canceled" style={{marginLeft: "5%"}} />Canceled
+      <input type="radio" id="status-canceled" name="status" value="canceled"  disabled={radioType === "movie"}/>
+      <br></br>
+      {"  "}Release:{" "}
+      <input type="number" name="release" style={{width: 50}}/>
+      {"  "}Runtime: {" "}
+      <input type="number" name="runtime" style={{width: 50}}/> Minutes
+      <br></br>
+      Watchlist?
+      <input type="checkbox" name="watchlist" defaultChecked />
+      <br></br>
+      <input type="submit" id="action2" value="ADD" onClick={(e) => setSubmitButton("submitToServer")} />
+    </div>
+  </form>
+</div>
+)
+};
 export default AddShow;

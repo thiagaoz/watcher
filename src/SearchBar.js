@@ -12,7 +12,7 @@ function SearchBar ({shows, setFilteredOnApp}){
             return setFilteredOnApp();
         }
         for (const show of shows){
-            if (filters.title !== "" && !show.title.includes(filters.title)){
+            if (filters.title !== "" && !show.title.toLowerCase().includes(filters.title)){
                 continue;
             }
             if (filters.type !== "all" && show.type !== filters.type){
@@ -43,7 +43,7 @@ function SearchBar ({shows, setFilteredOnApp}){
                 <input id="search-title" type="text" onChange={searchTitleChange}></input>
                 <br></br><br></br>
                 <input id="type-movie" type="radio" value="movie" checked={filters.type === "movie"} onChange={searchTypeChange} />Movie
-                <input id="type-series" type="radio" value="series" checked={filters.type === "series"} onChange={searchTypeChange} />Series
+                <input id="type-series" type="radio" value="tv" checked={filters.type === "tv"} onChange={searchTypeChange} />Series
                 <input id="type-ass" type="radio" value="all" checked={filters.type === "all"} onChange={searchTypeChange} />All Types
                 <br></br><br></br>
                 <button type="button" onClick={searchButtonPressed}>Search</button>

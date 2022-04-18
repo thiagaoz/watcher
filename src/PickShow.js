@@ -1,39 +1,59 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback} from "react";
+
 
 function PickShow({shows}){
+    const currentYear = new Date().getFullYear();
     const watchlist = shows.filter( show =>  show.watchlist);
     const [randomShow, setRandomShow] = useState();
 
-    const pickRandomShow = (arrOfShows = watchlist) => {
+    const pickRandomShow = useCallback((arrOfShows = watchlist) => {
         const randomIndex = Math.floor(Math.random() * arrOfShows.length);
         setRandomShow(arrOfShows[randomIndex])
-    }; 
+    }, [watchlist]); 
     //const filterRef = useRef({releaseMin: 0});
     
     useEffect(() =>{
         pickRandomShow();
-    }, [shows.length]);
+    }, [pickRandomShow]);
+
+    const adjustReleaseInput = (num, str) => {
+        if (str === "min" && !num) return 0;
+        if (str === "max" && !num) return currentYear;
+        if (num >= currentYear) return currentYear;
+        if (num <= 1888) return 1888;
+        return num;       
+    };
 
     const filterWatchlist = (e) =>{
         e.preventDefault();
+        console.log(currentYear);
+        e.target.releaseMin.value = adjustReleaseInput(e.target.releaseMin.value, "min");
+        e.target.releaseMax.value = adjustReleaseInput(e.target.releaseMax.value, "max");
+
+        if (e.target.releaseMin.value > e.target.releaseMax.value) return alert("Impossible release timeframe!");
+        if (e.target.runtimeMin.value > e.target.runtimeMax.value) return alert("Impossible runtime timeframe!");
+
         const filteredWatchlist = [];
         const filter = {
-            releaseMin: e.target.releaseMin.value ? parseInt(e.target.releaseMin.value) : 1888,
-            releaseMax: e.target.releaseMax.value ? parseInt(e.target.releaseMax.value) : 9999,
-            runtimeMin: e.target.runtimeMin.value ? parseInt(e.target.runtimeMin.value) : 0,
-            runtimeMax: e.target.runtimeMax.value ? parseInt(e.target.runtimeMin.value) : 9999,
+            releaseMin: (e.target.releaseMin.value),
+            releaseMax: (e.target.releaseMax.value) , 
+            runtimeMin: e.target.runtimeMin.value ? e.target.runtimeMin.value : 0,
+            runtimeMax: e.target.runtimeMax.value ? e.target.runtimeMax.value: 9999,
             type: e.target.type.value,
         };
         console.log(filter);
         //console.log(watchlist);
         for (const show of watchlist){
             if(show.release < filter.releaseMin || show.release > filter.releaseMax){
+                console.log("Release not valid: " +show.title);
                 continue;
             }
-            if(show.runtime < filter.runtimeMin || show.runtime > filter.runtimeMax){
+            if(show.runtime.total < filter.runtimeMin || show.runtime.total > filter.runtimeMax){
+                console.log("Runtime not valid: " + show.title);
                 continue;
             }
             if(filter.type && show.type !== filter.type){
+                console.log("Type not valid: " +show.title);
                 continue;
             }
             //console.log(show);
@@ -71,7 +91,7 @@ function PickShow({shows}){
                 <br></br>
                 <div id="type-container" style={{ padding: 10}}>
                     <input type="radio" name="type" value="movie" />Movie
-                    <input type="radio" name="type" value="series" />Series
+                    <input type="radio" name="type" value="tv" />TV
                     <input type="radio" name="type" value="" defaultChecked/>Any
                 </div>
                 <br></br>

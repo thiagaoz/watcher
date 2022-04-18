@@ -1,10 +1,9 @@
 import './App.css';
 import AddShow from './AddShow';
-import {useEffect, useState, useRef} from "react";
+import {useEffect, useState} from "react";
 import ShowsDisplay from './ShowsDisplay';
 import styled from "styled-components";
 import SearchBar from './SearchBar';
-import Watchlist from './Watchlist';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from './Navbar';
 import PickShow from './PickShow';
@@ -16,7 +15,6 @@ function App() {
   const [renderDisplay, setRenderDisplay] = useState(true);
   const [showToEdit, setShowToEdit] = useState();
   const [renderEdit, setRenderEdit] = useState(false);
-  const showIdRef = useRef();
 
   //console.log("App iniciados");
   useEffect(() => {
@@ -98,8 +96,3 @@ function App() {
 }
 
 export default App;
-
-
-{/*
-
-*/}

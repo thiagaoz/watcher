@@ -1,53 +1,39 @@
 {
   "shows": [
     {
-      "title": "the matrix",
+      "title": "The Matrix",
       "type": "movie",
+      "release": "1999",
+      "runtime": "136",
+      "status": "",
       "watchlist": false,
-      "release": 1999,
-      "runtime": {
-        "hours": 2,
-        "minutes": 35,
-        "total": 155
-      },
       "id": 1
     },
     {
-      "title": "doctor strange 2",
-      "type": "movie",
+      "title": "Moon Knight",
+      "type": "tv",
+      "release": "2022",
+      "runtime": "47",
+      "status": "running",
       "watchlist": true,
-      "release": 2022,
-      "runtime": {
-        "hours": 2,
-        "minutes": 30,
-        "total": 150
-      },
       "id": 2
     },
     {
-      "title": "moon knight",
-      "type": "series",
-      "watchlist": true,
-      "release": 2022,
-      "status": "running",
-      "runtime": {
-        "hours": 0,
-        "minutes": 55,
-        "total": 55
-      },
+      "title": "Wedding Crashers",
+      "type": "movie",
+      "release": "2005",
+      "runtime": "119",
+      "status": "",
+      "watchlist": false,
       "id": 3
     },
     {
-      "title": "seinfeld",
-      "type": "series",
-      "watchlist": false,
-      "release": 1989,
-      "status": "canceled",
-      "runtime": {
-        "hours": 0,
-        "minutes": 22,
-        "total": 22
-      },
+      "title": "Sonic the Hedgehog 2",
+      "type": "movie",
+      "release": "2022",
+      "runtime": "122",
+      "status": "",
+      "watchlist": true,
       "id": 4
     }
   ]

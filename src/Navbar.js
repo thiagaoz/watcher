@@ -22,6 +22,12 @@ function Navbar (props) {
         <div key="container-logo" className="container-logo">
             <h1>WATCHER</h1>
             <p>Track your shows</p>
+            powered by:
+            <img 
+                src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_1-8ba2ac31f354005783fab473602c34c3f4fd207150182061e425d366e4f34596.svg" 
+                width="15%"
+                alt="Logo from The Movie Database"
+            />
             <div className="container-links">
                 <Link to="/">
                     <button type="button" onClick={printWatchlist}>Watchlist</button>
@@ -39,6 +45,7 @@ function Navbar (props) {
                 <Link to="/search">
                     <button type="button">Search</button>
                 </Link>
+                
             </div>
         </div>
     );

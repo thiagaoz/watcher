@@ -1,28 +1,7 @@
 import {useState, useRef} from "react";
 
 function AddShow (props) {
-  /*
-    const addShowButtonPressed = (e) => {
-      if (title === ""){
-        return alert("Need a title!");
-      }
-      if (release < 1888){
-        return alert("The first motion picture is from 1888!");
-      }
-      if (!radioType.movie && !radioType.series){
-        return alert("Need a type!");
-      }
 
-      console.log(`${title} (${release}) adicionado com sucesso`);
-      setTitle("");
-      setRelease("");
-      setRuntime({hours: "", minutes: ""});
-      handleRadioType(e);
-      setWatchlist(false);
-      setStatus();
-
-    };
-*/
 const [submitButton, setSubmitButton] = useState();
 const [radioType, setRadioType] = useState("movie");
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY;

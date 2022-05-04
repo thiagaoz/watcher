@@ -16,7 +16,6 @@ function App() {
   const [showToEdit, setShowToEdit] = useState();
   const [renderEdit, setRenderEdit] = useState(false);
 
-  //console.log("App iniciados");
   useEffect(() => {
     fetch("http://localhost:3000/shows")
     .then((response) => response.json())

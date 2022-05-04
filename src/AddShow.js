@@ -4,7 +4,7 @@ function AddShow (props) {
 
 const [submitButton, setSubmitButton] = useState();
 const [radioType, setRadioType] = useState("movie");
-const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
+const MOVIE_API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 const urlRef = useRef("https://www.themoviedb.org/movie/603-the-matrix");
 
 //https://www.themoviedb.org/movie/603-the-matrix
@@ -16,7 +16,7 @@ const handleSubmit = (e) => {
     const urlArr = urlRef.current.value.split("/");
     const typeTemp = (urlArr[3]);
     const id = (urlArr[4].split("-")[0]);
-    fetch(`https://api.themoviedb.org/3/${typeTemp}/${id}?api_key=${API_KEY}&language=en-US`)
+    fetch(`https://api.themoviedb.org/3/${typeTemp}/${id}?api_key=${MOVIE_API_KEY}&language=en-US`)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error('Something went wrong');
@@ -46,7 +46,7 @@ const handleSubmit = (e) => {
       release: e.target.release.value,
       runtime: e.target.runtime.value,
       status: e.target.status.value,
-      watchlist: e.target.watchlist.checked
+      watchlist: e.target.watchlist.checked,
     };
 
     const requestOptions = {
@@ -63,7 +63,7 @@ const handleSubmit = (e) => {
       .then((data) => {
         props.addShow(data);
         console.log(`${data.title} (${data.release}) adicionado com sucesso`);
-      })
+      });
 
   }
 
